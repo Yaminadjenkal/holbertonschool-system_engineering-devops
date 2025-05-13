@@ -1,0 +1,88 @@
+1️⃣ Infrastructure Overview
+Your architecture consists of:
+
+1 Load Balancer (HAProxy) → Distributes traffic between servers.
+
+2 Backend Servers (each containing):
+
+Nginx (Web Server) → Handles HTTP requests.
+
+Application Server → Executes backend logic.
+
+Application Files → Stores website code.
+
+MySQL (Database) → Manages website data.
+
+2️⃣ Why Each Component is Added
+✅ HAProxy (Load Balancer)
+
+Ensures high availability by distributing incoming traffic across backend servers.
+
+Prevents overloading one server, improving performance.
+
+Can detect failures and redirect requests to healthy servers.
+
+✅ Two Backend Servers
+
+Redundancy: If one server fails, the second handles traffic.
+
+Scalability: Multiple servers manage more user requests efficiently.
+
+✅ Primary-Replica Database Setup (Master-Slave)
+
+Primary (Master) Database: Handles read/write operations.
+
+Replica (Slave) Database: Handles read-only requests for load balancing.
+
+Why? Improves performance by distributing database queries.
+
+3️⃣ Load Balancer Configuration & Algorithms
+🔹 Distribution Algorithm
+Your HAProxy can be configured with different algorithms:
+
+Round Robin → Requests are distributed equally across servers.
+
+Least Connections → Sends requests to the server with the fewest active connections.
+
+Source Hash → Ensures consistent requests go to the same server.
+
+🔹 Active-Active vs. Active-Passive Setup
+Active-Active → Both backend servers handle requests simultaneously.
+
+Active-Passive → One server is active, while the other is standby and takes over if the active one fails.
+
+Which to Choose?
+
+Active-Active is ideal for high-performance scaling.
+
+Active-Passive is safer but limits resource utilization.
+
+4️⃣ How Primary-Replica (Master-Slave) Databases Work
+The Primary (Master) database is responsible for all write operations.
+
+The Replica (Slave) database is used only for read requests to reduce the load.
+
+If the Master fails, the Replica can be promoted to become the new Master.
+
+🔹 Difference for the application:
+
+The application writes to the Primary.
+
+The application reads from the Replica to improve performance.
+
+5️⃣ Issues with This Infrastructure
+🔴 Single Points of Failure (SPOF)
+HAProxy failure → If the load balancer fails, the entire system becomes inaccessible.
+
+Single Primary Database → If the master database crashes, writes are blocked.
+
+🔴 Security Issues
+No firewall → Makes the system vulnerable to attacks.
+
+No HTTPS → Leaves connections unencrypted.
+
+🔴 No Monitoring
+No system in place to track performance or detect failures.
+
+6️⃣ Improvements to Address These Issues
+✅ Deploy multiple HAProxy instances → Avoid SPOF. ✅ Use HTTPS with SSL/TLS → Encrypt data. ✅ Add firewall rules → Protect against attacks. ✅ Set up monitoring tools → Track system health.
