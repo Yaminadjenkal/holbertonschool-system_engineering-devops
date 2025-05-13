@@ -1,0 +1,47 @@
+📌 Designing a One-Server Web Infrastructure
+1️⃣ Objective
+The goal is to set up a single-server infrastructure hosting a website accessible via www.foobar.com. The explanation follows the user request flow from their browser to the server.
+
+2️⃣ How It Works
+✔ Domain Name (foobar.com) This is the human-readable address of the website, instead of using an IP address.
+
+✔ DNS Record (www.foobar.com)
+
+Type: A record
+
+Maps www.foobar.com to 8.8.8.8, which is the server’s IP address.
+
+✔ Single Server (IP: 8.8.8.8) The server hosts everything:
+
+Nginx → The web server managing HTTP requests.
+
+Application Server → Runs the backend code and handles user requests.
+
+Application Files → Contains the HTML, CSS, JavaScript, and backend scripts.
+
+Database (MySQL) → Stores and organizes website data.
+
+3️⃣ 🔄 Request Process
+When a user enters www.foobar.com, here’s what happens: 1️⃣ The browser sends a request to www.foobar.com. 2️⃣ DNS translates the domain name to 8.8.8.8 and directs the request to the server. 3️⃣ Nginx processes the request:
+
+If it's for static content, it serves it directly.
+
+If it's for dynamic content (e.g., login, fetching data), it forwards it to the application server. 4️⃣ The application server processes the request and, if necessary, queries MySQL. 5️⃣ The database responds with the requested information. 6️⃣ Nginx sends the final response back to the user’s browser, displaying the webpage.
+
+4️⃣ 🔴 Infrastructure Issues
+⚠️ Single Point of Failure (SPOF)
+
+If the server crashes, the website goes offline completely.
+
+⚠️ Downtime During Maintenance
+
+Restarting Nginx or deploying new code temporarily interrupts the site.
+
+⚠️ Scalability Challenges
+
+High traffic slows down or crashes the server.
+
+No load balancing to efficiently distribute requests.
+
+5️⃣ 🔧 Possible Solutions
+✅ Add a second server to reduce downtime risk. ✅ Use a Load Balancer to handle increasing traffic. ✅ Implement database replication for improved performance.
