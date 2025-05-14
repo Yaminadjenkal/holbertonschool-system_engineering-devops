@@ -1,0 +1,80 @@
+1️⃣ Infrastructure Overview
+Your architecture consists of:
+
+1 Load Balancer (HAProxy) → Distributes traffic securely.
+
+2 Backend Servers (each containing):
+
+Nginx (Web Server) → Handles HTTP/HTTPS requests.
+
+Application Server → Executes backend logic.
+
+Application Files → Stores website code.
+
+MySQL (Database) → Manages website data.
+
+Security & Monitoring Additions:
+
+3 Firewalls → Protect against unauthorized access.
+
+1 SSL Certificate → Encrypts user traffic via HTTPS.
+
+3 Monitoring Clients → Tracks server performance.
+
+2️⃣ Why Each Component is Added
+✔ Firewalls (3 total)
+
+Purpose: Blocks unauthorized access and prevents cyberattacks.
+
+Placement:
+
+One before the Load Balancer (filters external requests).
+
+One before backend servers (protects application servers).
+
+One before the database (restricts direct access).
+
+✔ SSL Certificate
+
+Why? Encrypts traffic between the user and the web server.
+
+Prevents data interception and improves trust (HTTPS security).
+
+✔ Monitoring Clients
+
+Why? Tracks server health, performance, and security events.
+
+Tools like Sumologic, Prometheus, or Datadog provide logs and alerts.
+
+3️⃣ How Monitoring Works
+🔹 Data Collection
+
+Logs HTTP requests, CPU usage, memory, and security events.
+
+Uses agents installed on each server to send real-time data.
+
+🔹 Monitoring Web Server QPS (Queries Per Second)
+
+Use Nginx logs + Sumologic to track incoming requests.
+
+Set up alerts when traffic spikes occur.
+
+4️⃣ Issues in This Infrastructure
+⚠️ SSL Termination at Load Balancer
+
+If SSL is decrypted at HAProxy, traffic between the load balancer and backend is not encrypted, making it vulnerable.
+
+⚠️ Only One MySQL Server Accepts Writes
+
+If the primary database crashes, writes are blocked.
+
+Solution: Use database replication with a failover mechanism.
+
+⚠️ Each Server Has All Components
+
+Scalability is limited because each server does everything.
+
+Better Approach: Split database, application, and web servers across different machines.
+
+5️⃣ Improvements to Address These Issues
+✅ Terminate SSL at backend servers to keep encryption end-to-end. ✅ Use MySQL replication with an automatic failover system. ✅ Separate database from web/app servers to improve performance.
