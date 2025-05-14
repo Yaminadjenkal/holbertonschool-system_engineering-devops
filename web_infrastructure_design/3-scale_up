@@ -1,0 +1,40 @@
+1️⃣ Updated Infrastructure
+Your new architecture consists of:
+
+2 Load Balancers (HAProxy, configured as a cluster) → Distributes traffic efficiently.
+
+1 Web Server (Nginx) → Handles HTTP requests and serves static content.
+
+1 Application Server → Processes backend logic and business rules.
+
+1 Database Server (MySQL) → Manages website data.
+
+1 New Server → Helps split components for better performance.
+
+2️⃣ Why Are These Components Added?
+✅ New Load Balancer (HAProxy, Cluster Mode)
+
+Reason: Ensures high availability; if one load balancer fails, traffic continues.
+
+Cluster Configuration:
+
+Active-Active → Both HAProxy instances handle traffic.
+
+Active-Passive → One is active while the other is on standby.
+
+✅ Splitting Components Across Different Servers
+
+Web Server (Nginx) → Dedicated to handling HTTP requests.
+
+Application Server → Executes backend logic independently.
+
+Database Server (MySQL) → Keeps queries separate for optimized performance.
+
+Reason: Prevents overloading one machine by ensuring each role has its own resources.
+
+✅ Additional Server
+
+Reason: Supports scalability by offloading processing tasks.
+
+3️⃣ Infrastructure Benefits
+✔ Improved Performance → Each server focuses on its own role. ✔ Scalability → More resources handle high traffic efficiently. ✔ Fault Tolerance → Fewer risks if a component fails. ✔ Better Security → Reduced attack surface by separating services.
